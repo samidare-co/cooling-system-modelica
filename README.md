@@ -1,6 +1,8 @@
 ## Description
 Ce projet vise à modéliser l'architecture du système SRI, à simuler son comportement thermique et hydraulique, et à vérifier formellement les exigences industrielles à l'aide de la bibliothèque **CRML**.
 
+![system](Photos/system.jpg)
+
 ## Structure du Projet
 
 Le projet est organisé dans le dossier `SRI/cooling_system/` :
