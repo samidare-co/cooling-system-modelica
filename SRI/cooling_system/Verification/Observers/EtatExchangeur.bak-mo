@@ -1,0 +1,6 @@
+within cooling_system.Verification.Observers;
+
+model EtatExchangeur
+equation
+
+end EtatExchangeur;

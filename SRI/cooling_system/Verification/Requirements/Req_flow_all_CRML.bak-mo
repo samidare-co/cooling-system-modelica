@@ -1,0 +1,59 @@
+within cooling_system.Verification.Requirements;
+model Req_flow_all_CRML
+  "\"Le débit dans les pompes doit etre supérieur à 700 t/h\""
+  Modelica.Blocks.Interfaces.RealInput u annotation (
+    Placement(transformation(origin={-120,40},    extent = {{-20, -20}, {20, 20}}), iconTransformation(origin={-120,40},     extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Interfaces.RealInput u1 annotation (
+    Placement(transformation(origin={-120,-90},    extent = {{-20, -20}, {20, 20}}), iconTransformation(origin={-120,-38},   extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Interfaces.RealInput u2
+                                         annotation (
+    Placement(transformation(origin={-120,-36},   extent = {{-20, -20}, {20, 20}}), iconTransformation(origin={-120,
+            -118},                                                                                                           extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Interfaces.BooleanInput u3 annotation (Placement(
+        transformation(extent={{-140,60},{-100,100}}), iconTransformation(
+          extent={{-140,60},{-100,100}})));
+  Modelica.Blocks.Interfaces.BooleanInput u4 annotation (Placement(
+        transformation(extent={{-140,-18},{-100,22}}), iconTransformation(
+          extent={{-140,-18},{-100,22}})));
+  Modelica.Blocks.Interfaces.BooleanInput u5 annotation (Placement(
+        transformation(extent={{-140,-82},{-100,-42}}), iconTransformation(
+          extent={{-140,-98},{-100,-58}})));
+  CRML.ETL.Connectors.Boolean4Output boolean4Output annotation (Placement(
+        transformation(extent={{100,-10},{120,10}}), iconTransformation(extent=
+            {{100,-10},{120,10}})));
+  Req_flow_CRML req_flow_CRML1
+    annotation (Placement(transformation(extent={{-64,54},{-44,74}})));
+  Req_flow_CRML req_flow_CRML2
+    annotation (Placement(transformation(extent={{-66,-24},{-46,-4}})));
+  Req_flow_CRML req_flow_CRML3
+    annotation (Placement(transformation(extent={{-68,-82},{-48,-62}})));
+  CRML.Blocks.Logical4.And4_n and4_n(N=3)
+    annotation (Placement(transformation(extent={{4,-6},{24,14}})));
+equation
+
+  connect(u3, req_flow_CRML1.u1) annotation (Line(points={{-120,80},{-86,80},{
+          -86,66.6},{-66,66.6}}, color={255,0,255}));
+  connect(u, req_flow_CRML1.u) annotation (Line(points={{-120,40},{-86,40},{-86,
+          60.4},{-66,60.4}}, color={0,0,127}));
+  connect(u4, req_flow_CRML2.u1) annotation (Line(points={{-120,2},{-78,2},{-78,
+          -11.4},{-68,-11.4}}, color={255,0,255}));
+  connect(u2, req_flow_CRML2.u) annotation (Line(points={{-120,-36},{-78,-36},{
+          -78,-17.6},{-68,-17.6}}, color={0,0,127}));
+  connect(u5, req_flow_CRML3.u1) annotation (Line(points={{-120,-62},{-80,-62},
+          {-80,-69.4},{-70,-69.4}}, color={255,0,255}));
+  connect(u1, req_flow_CRML3.u) annotation (Line(points={{-120,-90},{-80,-90},{
+          -80,-75.6},{-70,-75.6}}, color={0,0,127}));
+  connect(req_flow_CRML1.boolean4Output, and4_n.u[1]) annotation (Line(points={
+          {-43,64},{-2,64},{-2,3.66667},{3,3.66667}}, color={162,29,33}));
+  connect(req_flow_CRML2.boolean4Output, and4_n.u[2]) annotation (Line(points={
+          {-45,-14},{-20,-14},{-20,4},{3,4}}, color={162,29,33}));
+  connect(req_flow_CRML3.boolean4Output, and4_n.u[3]) annotation (Line(points={
+          {-47,-72},{-6,-72},{-6,4.33333},{3,4.33333}}, color={162,29,33}));
+  connect(and4_n.y, boolean4Output) annotation (Line(points={{25,4},{94,4},{94,
+          0},{110,0}}, color={162,29,33}));
+annotation (
+    Icon(graphics={  Rectangle(
+          fillColor={128,0,255},
+          fillPattern=FillPattern.Solid,
+          extent={{-100,100},{100,-130}}),                                                                                       Text(origin = {-6, 124}, extent = {{-136, 30}, {136, -30}}, textString = "%name")}));
+end Req_flow_all_CRML;

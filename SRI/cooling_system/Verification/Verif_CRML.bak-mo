@@ -1,0 +1,162 @@
+within cooling_system.Verification;
+model Verif_CRML
+  "Modèle de vérification avec exigences CRML (Partie 3)"
+  
+  extends Verif;  // Hérite de votre modèle Partie 2
+  
+  // ============================================
+  // EXIGENCES CRML AVEC TOLÉRANCES TEMPORELLES
+  // ============================================
+  
+  Requirements_CRML.R1_CRML_Vitesse r1_crml 
+    annotation(Placement(transformation(origin={180,70}, extent={{-10,-10},{10,10}})));
+  
+  Requirements_CRML.R2_CRML_DeltaP r2_crml
+    annotation(Placement(transformation(origin={180,30}, extent={{-10,-10},{10,10}})));
+  
+  Requirements_CRML.R3_CRML_Debit r3_crml
+    annotation(Placement(transformation(origin={180,-10}, extent={{-10,-10},{10,10}})));
+  
+  Requirements_CRML.R4_CRML_Temperature r4_crml
+    annotation(Placement(transformation(origin={180,-50}, extent={{-10,-10},{10,10}})));
+  
+  Requirements_CRML.R_PompeSecours r_secours_crml
+    annotation(Placement(transformation(origin={180,-90}, extent={{-10,-10},{10,10}})));
+  
+  // ============================================
+  // INDICATEURS GLOBAUX
+  // ============================================
+  
+  Modelica.Blocks.Logical.And all_requirements_ok
+    "Toutes les exigences CRML satisfaites"
+    annotation(Placement(transformation(origin={220,0}, extent={{-10,-10},{10,10}})));
+  
+  Modelica.Blocks.Logical.And temp1
+    annotation(Placement(transformation(origin={200,50}, extent={{-6,-6},{6,6}})));
+  
+  Modelica.Blocks.Logical.And temp2
+    annotation(Placement(transformation(origin={200,10}, extent={{-6,-6},{6,6}})));
+  
+  Modelica.Blocks.Logical.And temp3
+    annotation(Placement(transformation(origin={200,-30}, extent={{-6,-6},{6,6}})));
+  
+equation
+  // ============================================
+  // CONNEXIONS R1 - VITESSE
+  // ============================================
+  connect(flowToSpeed.y, r1_crml.vitesse_ech1) annotation(
+    Line(points={{110,74},{140,74},{140,76},{168,76}}, color={0,0,127}));
+  
+  connect(flowToSpeed1.y, r1_crml.vitesse_ech2) annotation(
+    Line(points={{110,52},{140,52},{140,64},{168,64}}, color={0,0,127}));
+  
+  // ============================================
+  // CONNEXIONS R2 - DELTA PRESSION
+  // ============================================
+  connect(obs_deltaP_p1.y, r2_crml.deltaP_p1) annotation(
+    Line(points={{103,16},{140,16},{140,34},{168,34}}, color={0,0,127}));
+  
+  connect(obs_deltaP_p2.y, r2_crml.deltaP_p2) annotation(
+    Line(points={{103,-4},{140,-4},{140,26},{168,26}}, color={0,0,127}));
+  
+  // ============================================
+  // CONNEXIONS R3 - DEBIT MINIMAL
+  // ============================================
+  connect(obs_debit_p1.y, r3_crml.debit_p1) annotation(
+    Line(points={{112,-32},{140,-32},{140,-4},{168,-4}}, color={0,0,127}));
+  
+  connect(obs_debit_p2.y, r3_crml.debit_p2) annotation(
+    Line(points={{112,-46},{145,-46},{145,-10},{168,-10}}, color={0,0,127}));
+  
+  connect(obs_debit_p3.y, r3_crml.debit_p3) annotation(
+    Line(points={{112,-62},{150,-62},{150,-16},{168,-16}}, color={0,0,127}));
+  
+  // ============================================
+  // CONNEXIONS R4 - TEMPÉRATURE
+  // ============================================
+  connect(Temp.y, r4_crml.T) annotation(
+    Line(points={{24,58},{140,58},{140,-50},{168,-50}}, color={0,0,127}));
+  
+  // ============================================
+  // CONNEXIONS R_SECOURS - POMPE DE SECOURS
+  // ============================================
+  connect(obs_debit_p1.y, r_secours_crml.debit_p1) annotation(
+    Line(points={{112,-32},{140,-32},{140,-84},{168,-84}}, color={0,0,127}));
+  
+  connect(obs_debit_p2.y, r_secours_crml.debit_p2) annotation(
+    Line(points={{112,-46},{145,-46},{145,-90},{168,-90}}, color={0,0,127}));
+  
+  connect(obs_debit_p3.y, r_secours_crml.debit_p3) annotation(
+    Line(points={{112,-62},{150,-62},{150,-96},{168,-96}}, color={0,0,127}));
+  
+  // ============================================
+  // COMBINAISON DES EXIGENCES
+  // ============================================
+  connect(r1_crml.y, temp1.u1) annotation(
+    Line(points={{192,70},{196,70},{196,53},{193,53}}, color={255,0,255}));
+  
+  connect(r2_crml.y, temp1.u2) annotation(
+    Line(points={{192,30},{196,30},{196,47},{193,47}}, color={255,0,255}));
+  
+  connect(r3_crml.y, temp2.u1) annotation(
+    Line(points={{192,-10},{196,-10},{196,13},{193,13}}, color={255,0,255}));
+  
+  connect(r4_crml.y, temp2.u2) annotation(
+    Line(points={{192,-50},{196,-50},{196,7},{193,7}}, color={255,0,255}));
+  
+  connect(temp1.y, temp3.u1) annotation(
+    Line(points={{206.6,50},{210,50},{210,20},{190,20},{190,-27},{193,-27}}, color={255,0,255}));
+  
+  connect(temp2.y, temp3.u2) annotation(
+    Line(points={{206.6,10},{210,10},{210,-20},{190,-20},{190,-33},{193,-33}}, color={255,0,255}));
+  
+  connect(temp3.y, all_requirements_ok.u1) annotation(
+    Line(points={{206.6,-30},{215,-30},{215,6},{208,6}}, color={255,0,255}));
+  
+  connect(r_secours_crml.y, all_requirements_ok.u2) annotation(
+    Line(points={{192,-90},{215,-90},{215,-6},{208,-6}}, color={255,0,255}));
+  
+  annotation(
+    Diagram(graphics={
+      Rectangle(origin={-319,-20}, fillColor={230,230,250}, fillPattern=FillPattern.Solid,
+                extent={{-29,100},{51,-100}}),
+      Text(origin={204,91}, extent={{-20,5},{20,-5}}, textString="Exigences CRML"),
+      
+      Rectangle(origin={215,0}, fillColor={255,250,205}, fillPattern=FillPattern.Solid,
+                extent={{-15,40},{25,-40}}),
+      Text(origin={217,37}, extent={{-15,3},{15,-3}}, textString="Combinaison")
+    }, coordinateSystem(extent={{-200,-100},{240,100}})),
+    
+    Icon(coordinateSystem(extent={{-200,-100},{240,100}})),
+    
+    experiment(StartTime=0, StopTime=1000, Tolerance=1e-06, Interval=2),
+    
+    Documentation(info="<html>
+<h4>Modèle de vérification avec exigences CRML (Partie 3)</h4>
+
+<p>Ce modèle étend le modèle Verif de la partie 2 en ajoutant des exigences 
+avec tolérances temporelles réalistes:</p>
+
+<ul>
+<li><b>R1_CRML</b>: Vitesse peut dépasser 6 m/s max 10s cumulées par fenêtre de 60s</li>
+<li><b>R2_CRML</b>: ΔP peut sortir de [2.24, 2.64] bar mais doit revenir en moins de 30s</li>
+<li><b>R3_CRML</b>: Débit peut descendre sous 700 m³/h max 2s lors des commutations</li>
+<li><b>R4_CRML</b>: Température peut sortir de [16,30]°C mais doit revenir en moins de 5s</li>
+<li><b>R_Secours</b>: Si pompe en panne, pompe secours démarre en moins de 15s</li>
+</ul>
+
+<h4>Sorties importantes à observer:</h4>
+<ul>
+<li><code>r1_crml.y</code>: Boolean satisfait/non satisfait pour R1</li>
+<li><code>r1_crml.duree_cumul_ech1</code>: Durée cumulée des violations (diagnostic)</li>
+<li><code>all_requirements_ok.y</code>: true si toutes les exigences CRML satisfaites</li>
+</ul>
+
+<h4>Interprétation des résultats Boolean:</h4>
+<ul>
+<li><code>true</code>: Exigence satisfaite ✅</li>
+<li><code>false</code>: Exigence violée ❌</li>
+</ul>
+
+</html>"));
+end Verif_CRML;
